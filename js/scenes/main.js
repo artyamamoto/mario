@@ -3,7 +3,7 @@ var MainScene = Class.create(BaseScene, {
 	"initialize" : function() {
 		BaseScene.call(this);
 		
-		this.backgroundColor = 'rgba(0,0,0,1.0)';
+		this.backgroundColor = 'rgba(110,130,255,1.0)';
 				
 		this.stage = new Group();
 		this.addChild(this.stage);
@@ -15,6 +15,11 @@ var MainScene = Class.create(BaseScene, {
 		this.mario.map = this.map;
 		this.stage.addChild(this.mario);
 			
+		var pad = new Pad();
+		pad.x = 0;
+		pad.y = 220;
+		this.addChild(pad);
+		
 		var that = this;
 		this.stage.addEventListener('enterframe' , function() {
 			//that.stage.x = Math.max(that.map.width - game.width , 
