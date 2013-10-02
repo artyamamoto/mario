@@ -1,0 +1,10 @@
+
+
+		sf.draw(img, 0, 0, img.width, img.height, w, 0, w, h );
+		
+		return sf;
+	}
+});
+
+})();
+
