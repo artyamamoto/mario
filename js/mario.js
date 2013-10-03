@@ -28,6 +28,7 @@ window.Mario = Class.create(Sprite, {
 		this.images.running = getimage('running');
 		this.images.jumping = getimage('jumping');
 		this.images.standing = getimage('standing');
+		this.images.dying = getimage('dying');
 			
 		this.setImage('jumping');
 		
@@ -45,6 +46,40 @@ window.Mario = Class.create(Sprite, {
 		}
 	} , 
 	"onenterframe" : function() {
+		if (this.dying_stop) {
+			if (this.dying_stop-- > 0) {
+				this.setImage("dying");
+				return;
+			}
+		}
+		if (this.dead) {
+			return;
+		} 
+		// 死んでるアクション
+		if (this.dying) {
+			this.setImage("dying");
+			this.dy += this.gravity;
+			this.y += this.dy;
+			
+			if (this.dy > 0 && this.y > game.height) {
+				this.dead = true;
+				game.fps = 48;
+			}
+			return;
+		} 
+		// 死に判定
+		if (this.y > game.height - 15) {
+			this.dying_stop = 22;
+			this.dying = true;
+			this.y = game.height - 15;
+			this.dy = -this.ay;
+			this.setImage("dying");
+			
+			game.fps = 28;
+			
+			return;
+		}
+		
 		if (game.input.up && !this._jumpLocked && !this.jumping) {
 			this.dy = -this.ay;
 			this.jumping = true;

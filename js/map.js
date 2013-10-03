@@ -27,8 +27,10 @@ for (var y=0; y<20; y++) {
 	blocks[y] = [];
 	for (var x=0 ; x<300; x++) {
 		var n = -1;
+		// 地面
 		if (y == 19) 
 			n = 1;
+		// ブロック
 		if ((y == 15 && (x == 25 || x == 27 || x == 29))  ||
 			(y == 15 && (x == 88 || x == 90)) || 
 			(y == 11 && (91 <= x && x <= 98) ) || 
@@ -40,7 +42,7 @@ for (var y=0; y<20; y++) {
 			(y == 11 && (139 == x || x == 142)) ||
 			(y == 15 && (x == 140 || x == 141) ) || 
 			(y == 15 && (x == 179 || x == 180 || x == 182) )  )
-			n = 1;
+			n = 2;
 		// ? ブロック
 		if ( (y == 15 && (x == 22 || x == 26 || x == 28)) || 
 			 (y == 11 && x == 27) || 
@@ -51,14 +53,40 @@ for (var y=0; y<20; y++) {
 			 (y == 11 && x == 120) ||
 		 	 (y == 11 && (x == 140 || x == 141))  || 
 			 (y == 15 && x == 181 ) )
-			n = 1;
+			n = 3;
 		// どかん
-		if ( ((17 <= y && y <= 18) && (x == 33 || x == 34)) || 
+		/* if ( ((17 <= y && y <= 18) && (x == 33 || x == 34)) || 
 			 ((16 <=y && y <= 18) && (x == 47 || x == 48)) || 
 			 ((15 <= y && y <=18) && (x == 61 || x == 62) ) ||
 			 ((17 <= y && y <= 18)  && (x == 174 || x == 175) )  || 
 			 ((17 <= y && y <= 18) && (x == 190 || x == 191) ) )
+		{
 			n = 1;
+		} */
+		var dokans = [
+			[17,18,33,34] ,
+			[16,18,47,48] ,
+			[15,18,61,62] ,
+			[17,18,174,175] ,
+			[17,18,190,191] ,
+		];
+		dokans.forEach(function(_data) {
+			if (n !== -1) 
+				return;
+			
+			if (y == _data[0]) { 
+				if (x == _data[2])
+					n = 5;
+				if (x == _data[3])
+					n = 6;
+			} else if (_data[0] < y && y <= _data[1]) {
+				if (x == _data[2])
+					n = 7;
+				if (x == _data[3])
+					n = 8;
+			}
+		});
+		
 		// かたそうなブロック
 		if ( (y == 18 && ( (145 <= x && x <= 148) || (151 <= x && x <= 154) ) )  || 
 			 (y == 17 && ( (146 <= x && x <= 148) || (151 <= x && x <= 153) ) )  || 
@@ -68,9 +96,9 @@ for (var y=0; y<20; y++) {
 			 (y == 17 && ( (160 <= x && x <= 163) || (166 <= x && x <= 168) ) )  || 
 			 (y == 16 && ( (161 <= x && x <= 163) || (166 <= x && x <= 167) ) )  || 
 			 (y == 15 && ( (162 <= x && x <= 163) || (166 <= x && x <= 166) ) )  || 
-			 ((192 <= x && x <= 201) && (y >= 192 - x + 18) && y >= 10) ||   
+			 ((192 <= x && x <= 201) && (y >= 192 - x + 18) && (10 <= y && y <= 18) ) ||   
 			false )
-			n = 1;
+			n = 4;
 		// あな
 		if ( y == 19 && 
 			(x == 75 || x == 76 || x == 97 || x == 98 || x == 99 || x == 164 || x == 165) )
@@ -78,6 +106,8 @@ for (var y=0; y<20; y++) {
 		// フラグ
 		if (x == 210 && y >= 10)
 			n = 1;
+		
+		
 		blocks[y][x] = n;
 	}
 } 
@@ -89,8 +119,9 @@ window.MarioMap = Class.create(Map, {
 		this.x = 0;
 		this.y = 0;
 		
-		this._sf = this.createMapSurface();
-		this.image = this._sf;
+	//	this._sf = this.createMapSurface();
+	//	this.image = this._sf;
+		this.image = game.assets[configs.images.map];
 		
 		//=== map 
 		this.loadData(blocks);
@@ -102,7 +133,7 @@ window.MarioMap = Class.create(Map, {
 				this.collisionData[y][x] = ((blocks[y][x] > 0) ? 1 : 0);
 			}
 		}
-	}, 
+	} /*, 
 	"createMapSurface" : function() {
 		var w = 16 , 
 			h = 16; 
@@ -117,7 +148,7 @@ window.MarioMap = Class.create(Map, {
 		sf.draw(img, 0, 0, img.width, img.height, w, 0, w, h );
 		
 		return sf;
-	}
+	} */
 });
 
 })();

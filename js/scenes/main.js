@@ -28,6 +28,20 @@ var MainScene = Class.create(BaseScene, {
 			/* if (that.stage.x < that.map._image.width - game.width) {
 				that.stage.x = that.map._image.width - game.width;
 			} */	
+			
+			if (that.mario.dying) {
+				if (! that.gameover) {
+					var img = game.assets[configs.images.gameover];
+					that.gameover = new Sprite(img.width, img.height);
+					that.gameover.image = img;
+					that.gameover.x = (game.width - img.width) / 2;
+					that.gameover.y = (game.height - img.height) / 2;
+					that.addChild(that.gameover);
+				}
+			} 
+			if (that.mario.dead) {
+				//game.end(0, 'GameOver');
+			} 
 		});
 	}
 });
